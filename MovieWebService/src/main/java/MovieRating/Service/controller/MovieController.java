@@ -58,4 +58,5 @@ public class MovieController {
         //En caso contrario solo muestra todas las peliculas
         else return movieserv.getAllMovies();
     }
+    public void NohaceNada(){}
 }
