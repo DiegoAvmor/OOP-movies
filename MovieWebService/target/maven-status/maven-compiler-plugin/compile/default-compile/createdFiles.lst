@@ -1,0 +1,6 @@
+MovieRating\Service\service\MovieService.class
+MovieRating\Service\ServiceApplication.class
+MovieRating\Service\model\Movie.class
+MovieRating\Service\service\bean\MovieFilteringBean.class
+MovieRating\Service\exceptions\MovieNotFoundException.class
+MovieRating\Service\controller\MovieController.class
