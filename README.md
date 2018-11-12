@@ -1,1 +1,1 @@
-This is the repo for the final project of OOP.
+Esta rama tiene un proyecto demo de Hibernate y REST.
