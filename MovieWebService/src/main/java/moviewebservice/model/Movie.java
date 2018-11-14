@@ -1,6 +1,8 @@
-package com.cervera.moviesservice.model;
+package moviewebservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import moviewebservice.model.Genre;
+
 import javax.persistence.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
