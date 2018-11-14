@@ -2,6 +2,7 @@ package com.cervera.moviesservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +14,16 @@ public class Movie {
     private Integer id;
     private String title;
     private String overview;
-/*    @ManyToMany
-    private List<Genre> genre = new ArrayList<>();
+    @ManyToMany
+    private List<Genre> genres = new ArrayList<>();
 
-    public List<Genre> getGenre() {
-        return genre;
+    public List<Genre> getGenres() {
+        return genres;
     }
 
-    public void setGenre(List<Genre> genre) {
-        this.genre = genre;
-    }*/
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
 
     public Integer getId() {
         return id;

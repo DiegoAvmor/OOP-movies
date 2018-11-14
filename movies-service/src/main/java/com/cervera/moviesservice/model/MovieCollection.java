@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieCollection {
-    private ArrayList<Movie> results;
+    private ArrayList<Movie> results = new ArrayList<>();
 
     public ArrayList<Movie> getResults() {
         return results;

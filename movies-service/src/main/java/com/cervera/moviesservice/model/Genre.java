@@ -13,16 +13,6 @@ public class Genre {
     @Id
     private Integer id;
     private String name;
-/*    @ManyToMany
-    private List<Movie> movie = new ArrayList<>();
-
-    public List<Movie> getMovie() {
-        return movie;
-    }
-
-    public void setMovie(List<Movie> movie) {
-        this.movie = movie;
-    }*/
 
     public Integer getId() {
         return id;
