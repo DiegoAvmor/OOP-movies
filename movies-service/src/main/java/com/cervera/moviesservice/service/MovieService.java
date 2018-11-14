@@ -1,5 +1,6 @@
 package com.cervera.moviesservice.service;
 
+import com.cervera.moviesservice.Repository.GenreRepository;
 import com.cervera.moviesservice.Repository.MovieRepository;
 import com.cervera.moviesservice.model.*;
 import com.cervera.moviesservice.model.MovieCollection;
@@ -8,11 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MovieService {
     @Autowired
     MovieRepository movieRepository;
+
+    @Autowired
+    GenreRepository genreRepository;
 
     @PostConstruct
     public void loadData() {
@@ -23,27 +28,16 @@ public class MovieService {
             String APIKey = "272f8904aff5923c030b53292132aec4";
 
             for(int i = 1; i <= pages; i++) {
-                MovieIdCollection ids = restTemplate.getForObject(
+                MovieRawCollection movieRawCollection = restTemplate.getForObject(
                         "https://api.themoviedb.org/3/movie/top_rated?api_key="+
                                 APIKey +"&language=en-US&page=" + i,
-                        MovieIdCollection.class
+                        MovieRawCollection.class
                 );
 
-                MovieCollection result = new MovieCollection();
+                movieRawCollection.initGenreRepository(genreRepository);
 
-                Movie movie;
-
-                for(MovieId id : ids.getResults()) {
-                    movie = restTemplate.getForObject(
-                            "https://api.themoviedb.org/3/movie/" + id.getId()
-                                    + "?api_key=" + APIKey,
-                            Movie.class
-                    );
-
-                    result.getResults().add(movie);
-                }
-
-                movieRepository.saveAll(result.getResults());
+                movieRepository.saveAll(movieRawCollection.
+                        buildMovieCollection().getResults());
             }
         }
     }

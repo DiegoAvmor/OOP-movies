@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GenreCollection {
-    private ArrayList<Genre> genres;
+    private ArrayList<Genre> genres = new ArrayList<>();
 
     public ArrayList<Genre> getGenres() {
         return genres;

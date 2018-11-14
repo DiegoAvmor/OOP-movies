@@ -13,9 +13,21 @@ public class Movie {
     @Id
     private Integer id;
     private String title;
+    @Column(length = 1800)
     private String overview;
     @ManyToMany
     private List<Genre> genres = new ArrayList<>();
+
+    public Movie() {
+
+    }
+
+    public Movie(Integer id, String title, String overview, List<Genre> genres) {
+        this.id = id;
+        this.title = title;
+        this.overview = overview;
+        this.genres = genres;
+    }
 
     public List<Genre> getGenres() {
         return genres;
@@ -52,9 +64,10 @@ public class Movie {
     @Override
     public String toString() {
         return "Movie{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", title='" + title + '\'' +
                 ", overview='" + overview + '\'' +
+                ", genres=" + genres +
                 '}';
     }
 }

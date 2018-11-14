@@ -1,12 +1,16 @@
 package com.cervera.moviesservice.service;
 
 import com.cervera.moviesservice.Repository.GenreRepository;
+import com.cervera.moviesservice.model.Genre;
 import com.cervera.moviesservice.model.GenreCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GenreService {
@@ -25,6 +29,7 @@ public class GenreService {
                     APIKey + "&language=en-US", GenreCollection.class);
 
             genreRepository.saveAll(genres.getGenres());
+
         }
     }
 
