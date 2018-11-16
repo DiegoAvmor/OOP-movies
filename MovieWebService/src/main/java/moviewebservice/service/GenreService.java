@@ -1,5 +1,6 @@
 package moviewebservice.service;
 
+import moviewebservice.model.Genre;
 import moviewebservice.repository.GenreRepository;
 import moviewebservice.util.GenreCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class GenreService {
             genreRepository.saveAll(genres.getGenres());
 
         }
+    }
+
+    public List<Genre> getAllGenres() {
+        return genreRepository.findAll();
     }
 
 }

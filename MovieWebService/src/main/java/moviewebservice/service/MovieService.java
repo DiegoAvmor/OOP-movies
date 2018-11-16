@@ -1,6 +1,9 @@
 package moviewebservice.service;
 
+import moviewebservice.model.Movie;
+import moviewebservice.model.MovieGenre;
 import moviewebservice.repository.GenreRepository;
+import moviewebservice.repository.MovieGenreRepository;
 import moviewebservice.repository.MovieRepository;
 import moviewebservice.util.MovieRawCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -17,6 +21,9 @@ public class MovieService {
 
     @Autowired
     GenreRepository genreRepository;
+
+    @Autowired
+    MovieGenreRepository movieGenreRepository;
 
     @PostConstruct
     public void loadData() {
@@ -39,5 +46,28 @@ public class MovieService {
                         buildMovieCollection().getResults());
             }
         }
+    }
+
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
+    }
+
+    public Movie getMovieById(int id) {
+        return movieRepository.findById(id).get();
+    }
+
+    private List<MovieGenre> getMovieIdsByGenreIds(List<Integer> ids) {
+        return movieGenreRepository.findMovieIdByGenreIds(ids);
+    }
+
+    public List<Movie> getMoviesByGenreIds(List<Integer> ids) {
+        List<MovieGenre> movieGenreFiltered = getMovieIdsByGenreIds(ids);
+        List<Movie> movies = new ArrayList<>();
+
+        for(MovieGenre movieGenre : movieGenreFiltered)
+            if(!movies.contains(movieRepository.findById(movieGenre.getMovieGenreId().getMovie_id()).get()))
+                movies.add(movieRepository.findById(movieGenre.getMovieGenreId().getMovie_id()).get());
+
+        return movies;
     }
 }
