@@ -56,17 +56,16 @@ public class MovieService {
         return movieRepository.findById(id).get();
     }
 
-    private List<MovieGenre> getMovieIdsByGenreIds(List<Integer> ids) {
+    private List<Integer> getMovieIdsByGenreIds(List<Integer> ids) {
         return movieGenreRepository.findMovieIdByGenreIds(ids);
     }
 
     public List<Movie> getMoviesByGenreIds(List<Integer> ids) {
-        List<MovieGenre> movieGenreFiltered = getMovieIdsByGenreIds(ids);
         List<Movie> movies = new ArrayList<>();
 
-        for(MovieGenre movieGenre : movieGenreFiltered)
-            if(!movies.contains(movieRepository.findById(movieGenre.getMovieGenreId().getMovie_id()).get()))
-                movies.add(movieRepository.findById(movieGenre.getMovieGenreId().getMovie_id()).get());
+        for(Integer movieId : getMovieIdsByGenreIds(ids))
+            if(!movies.contains(movieRepository.findById(movieId).get()))
+                movies.add(movieRepository.findById(movieId).get());
 
         return movies;
     }

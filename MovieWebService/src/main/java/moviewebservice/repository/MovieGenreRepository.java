@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface MovieGenreRepository extends JpaRepository<MovieGenre, MovieGenreId> {
     // from MovieGenre where genres_id in :ids
-    @Query("from MovieGenre where genres_id in :ids")
-    List<MovieGenre> findMovieIdByGenreIds(@Param("ids") List<Integer> ids);
+    @Query("select o.movieGenreId.movie_id from MovieGenre o where genres_id in :ids")
+    List<Integer> findMovieIdByGenreIds(@Param("ids") List<Integer> ids);
 }
