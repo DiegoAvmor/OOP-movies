@@ -14,16 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/movies")
-public class SystemController {
+public class MovieController {
 
     @Autowired
     GenreService genreService;
     
     @Autowired
     MovieService movieService;
-
-    @Autowired
-    MovieGenreService movieGenreService;
 
     @GetMapping("{id}")
     public Movie getMovie(@PathVariable int id) {
@@ -33,11 +30,6 @@ public class SystemController {
     @GetMapping
     public List<Movie> getAllMovies() {
         return movieService.getAllMovies();
-    }
-
-    @GetMapping("/genres")
-    public List<Genre> getGenres() {
-        return genreService.getAllGenres();
     }
 
     @GetMapping("/genres/{ids}")
