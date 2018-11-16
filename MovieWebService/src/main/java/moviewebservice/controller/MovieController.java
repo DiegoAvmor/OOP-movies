@@ -1,5 +1,6 @@
 package moviewebservice.controller;
 
+import moviewebservice.repository.GenreRepository;
 import moviewebservice.repository.MovieRepository;
 import moviewebservice.service.MovieService;
 import moviewebservice.model.Movie;
