@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class MovieController {
 
     @Autowired
+    GenreRepository genreRepository;
+    
+    @Autowired
     MovieRepository movieRepository;
     /**
      * <p>Metodo que devuelve una pelicula apartir de su id correspondiente.
