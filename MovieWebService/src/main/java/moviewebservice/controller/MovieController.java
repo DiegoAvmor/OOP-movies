@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.List;
 import moviewebservice.service.GenreService;
 import moviewebservice.service.MovieService;
+import moviewebservice.util.MovieFactory;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,9 +26,12 @@ public class MovieController {
     @Autowired
     MovieService movieService;
 
+    @Autowired
+    MovieFactory movieFactory;
+
     @GetMapping("{id}")
     public Movie getMovie(@PathVariable int id) {
-        return movieService.getMovieById(id);
+        return movieFactory.initRating(movieService.getMovieById(id));
     }
 
     @GetMapping(value = "/{id}/poster", produces = MediaType.IMAGE_JPEG_VALUE)
@@ -36,10 +40,15 @@ public class MovieController {
         InputStream in = new URL(movie.getPoster_path()).openStream();
         return IOUtils.toByteArray(in);
     }
-    
+
     @GetMapping
     public List<Movie> getAllMovies() {
-        return movieService.getAllMovies();
+        List<Movie> movies = movieService.getAllMovies();
+
+        for(Movie movie : movies)
+            movie = movieFactory.initRating(movie);
+
+        return movies;
     }
 
     @GetMapping("/genres/{ids}")

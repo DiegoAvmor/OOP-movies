@@ -3,7 +3,9 @@ package moviewebservice.util;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import moviewebservice.model.Genre;
 import moviewebservice.model.Movie;
+import moviewebservice.model.Rating;
 import moviewebservice.repository.GenreRepository;
+import moviewebservice.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -29,7 +31,6 @@ public class MovieRaw {
 
         for(Integer genre_id : genre_ids) {
             Optional<Genre> optional = genreRepository.findById(genre_id);
-            System.out.println(optional.get());
             genres.add(optional.get());
         }
 

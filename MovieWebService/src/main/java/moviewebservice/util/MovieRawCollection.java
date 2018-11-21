@@ -2,6 +2,7 @@ package moviewebservice.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import moviewebservice.repository.GenreRepository;
+import moviewebservice.service.RatingService;
 import moviewebservice.util.MovieCollection;
 import moviewebservice.util.MovieRaw;
 

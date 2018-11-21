@@ -12,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "movies")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
     @Id
     private Integer id;
@@ -21,12 +22,15 @@ public class Movie {
     @ManyToMany
     private List<Genre> genres = new ArrayList<>();
     private String poster_path;
+    @Transient
+    private Rating rating;
 
     public Movie() {
 
     }
 
-    public Movie(Integer id, String title, String overview, String poster_path, List<Genre> genres) {
+    public Movie(Integer id, String title, String overview,
+                 String poster_path, List<Genre> genres) {
         this.id = id;
         this.title = title;
         this.overview = overview;
@@ -72,6 +76,14 @@ public class Movie {
 
     public void setPoster_path(String poster_path) {
         this.poster_path = poster_path;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 
     @Override

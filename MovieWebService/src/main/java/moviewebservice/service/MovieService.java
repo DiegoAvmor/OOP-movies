@@ -25,6 +25,9 @@ public class MovieService {
     @Autowired
     MovieGenreRepository movieGenreRepository;
 
+    @Autowired
+    RatingService ratingService;
+
     @PostConstruct
     public void loadData() {
         if(movieRepository.findAll().size() == 0) {
@@ -42,8 +45,10 @@ public class MovieService {
 
                 movieRawCollection.initGenreRepository(genreRepository);
 
-                movieRepository.saveAll(movieRawCollection.
-                        buildMovieCollection().getResults());
+                List<Movie> movies = movieRawCollection.
+                        buildMovieCollection().getResults();
+
+                movieRepository.saveAll(movies);
             }
         }
     }
