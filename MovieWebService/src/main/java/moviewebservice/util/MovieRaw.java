@@ -19,6 +19,7 @@ public class MovieRaw {
     private Integer id;
     private String title;
     private String overview;
+    private String poster_path;
     private ArrayList<Integer> genre_ids = new ArrayList<>();
 
     GenreRepository genreRepository;
@@ -32,7 +33,9 @@ public class MovieRaw {
             genres.add(optional.get());
         }
 
-        return new Movie(id, title, overview, genres);
+        poster_path = "https://image.tmdb.org/t/p/w500" + poster_path;
+
+        return new Movie(id, title, overview, poster_path, genres);
     }
 
     public GenreRepository getGenreRepository() {
@@ -73,6 +76,14 @@ public class MovieRaw {
 
     public void setOverview(String overview) {
         this.overview = overview;
+    }
+
+    public String getPoster_path() {
+        return poster_path;
+    }
+
+    public void setPoster_path(String poster_path) {
+        this.poster_path = poster_path;
     }
 
     @Override

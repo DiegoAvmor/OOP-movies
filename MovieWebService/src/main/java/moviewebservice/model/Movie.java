@@ -1,6 +1,8 @@
 package moviewebservice.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import moviewebservice.model.Genre;
 
 import javax.persistence.*;
@@ -18,15 +20,17 @@ public class Movie {
     private String overview;
     @ManyToMany
     private List<Genre> genres = new ArrayList<>();
+    private String poster_path;
 
     public Movie() {
 
     }
 
-    public Movie(Integer id, String title, String overview, List<Genre> genres) {
+    public Movie(Integer id, String title, String overview, String poster_path, List<Genre> genres) {
         this.id = id;
         this.title = title;
         this.overview = overview;
+        this.poster_path = poster_path;
         this.genres = genres;
     }
 
@@ -60,6 +64,14 @@ public class Movie {
 
     public void setOverview(String overview) {
         this.overview = overview;
+    }
+
+    public String getPoster_path() {
+        return poster_path;
+    }
+
+    public void setPoster_path(String poster_path) {
+        this.poster_path = poster_path;
     }
 
     @Override
