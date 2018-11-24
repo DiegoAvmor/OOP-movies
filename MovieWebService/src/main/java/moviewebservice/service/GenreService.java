@@ -1,16 +1,11 @@
 package moviewebservice.service;
 
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.TypeRef;
-import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
-import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 import moviewebservice.model.Genre;
 import moviewebservice.repository.GenreRepository;
 import moviewebservice.util.JsonPathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +15,7 @@ import java.util.List;
 public class GenreService {
 
     @Autowired
-    GenreRepository genreRepository;
+    private GenreRepository genreRepository;
 
     @PostConstruct
     public void loadData() {
@@ -45,4 +40,7 @@ public class GenreService {
         return genreRepository.findAll();
     }
 
+    public Genre getGenreById(Integer genre_id) {
+        return genreRepository.findById(genre_id).get();
+    }
 }

@@ -8,6 +8,7 @@ import moviewebservice.repository.GenreRepository;
 import moviewebservice.repository.MovieGenreRepository;
 import moviewebservice.repository.MovieRepository;
 import moviewebservice.util.JsonPathUtil;
+import moviewebservice.util.MovieFactory;
 import moviewebservice.util.MovieRaw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,16 +23,13 @@ import java.util.List;
 @Service
 public class MovieService {
     @Autowired
-    MovieRepository movieRepository;
+    private MovieRepository movieRepository;
 
     @Autowired
-    GenreRepository genreRepository;
+    private MovieGenreRepository movieGenreRepository;
 
     @Autowired
-    MovieGenreRepository movieGenreRepository;
-
-    @Autowired
-    RatingService ratingService;
+    private  MovieFactory movieFactory;
 
     @PostConstruct
     public void loadData() {
@@ -53,10 +51,8 @@ public class MovieService {
 
                     List<Movie> movies = new ArrayList<>();
 
-                    for(MovieRaw movieRaw : movieRaws) {
-                        movieRaw.setGenreRepository(genreRepository);
-                        movies.add(movieRaw.buildMovie());
-                    }
+                    for(MovieRaw movieRaw : movieRaws)
+                        movies.add(movieFactory.buildMovie(movieRaw));
 
                     movieRepository.saveAll(movies);
                 } catch (IOException e) {

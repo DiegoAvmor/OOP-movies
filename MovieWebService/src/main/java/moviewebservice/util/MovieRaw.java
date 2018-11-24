@@ -26,29 +26,6 @@ public class MovieRaw {
     private String poster_path;
     private ArrayList<Integer> genre_ids = new ArrayList<>();
 
-    GenreRepository genreRepository;
-
-    public Movie buildMovie() {
-        List<Genre> genres = new ArrayList<>();
-
-        for(Integer genre_id : genre_ids) {
-            Optional<Genre> optional = genreRepository.findById(genre_id);
-            genres.add(optional.get());
-        }
-
-        poster_path = "https://image.tmdb.org/t/p/w500" + poster_path;
-
-        return new Movie(id, title, overview, poster_path, genres);
-    }
-
-    public GenreRepository getGenreRepository() {
-        return genreRepository;
-    }
-
-    public void setGenreRepository(GenreRepository genreRepository) {
-        this.genreRepository = genreRepository;
-    }
-
     public List<Integer> getGenre_ids() {
         return genre_ids;
     }

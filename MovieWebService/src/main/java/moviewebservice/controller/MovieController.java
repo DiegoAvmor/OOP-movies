@@ -19,15 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
-
-    @Autowired
-    GenreService genreService;
     
     @Autowired
-    MovieService movieService;
+    private MovieService movieService;
 
     @Autowired
-    MovieFactory movieFactory;
+    private MovieFactory movieFactory;
 
     @GetMapping("{id}")
     public Movie getMovie(@PathVariable int id) {
@@ -43,16 +40,13 @@ public class MovieController {
 
     @GetMapping
     public List<Movie> getAllMovies() {
-        List<Movie> movies = movieService.getAllMovies();
-
-        for(Movie movie : movies)
-            movie = movieFactory.initRating(movie);
+        List<Movie> movies = movieFactory.initRatings(movieService.getAllMovies());
 
         return movies;
     }
 
     @GetMapping("/genres/{ids}")
     public List<Movie> getMoviesByGenres(@PathVariable List<Integer> ids) {
-        return movieService.getMoviesByGenreIds(ids);
+        return movieFactory.initRatings(movieService.getMoviesByGenreIds(ids));
     }
 }
