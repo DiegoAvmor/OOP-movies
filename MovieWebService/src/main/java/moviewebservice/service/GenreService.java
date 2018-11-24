@@ -1,16 +1,20 @@
 package moviewebservice.service;
 
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.TypeRef;
+import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
+import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 import moviewebservice.model.Genre;
 import moviewebservice.repository.GenreRepository;
-import moviewebservice.util.GenreCollection;
+import moviewebservice.util.JsonPathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GenreService {
@@ -21,15 +25,19 @@ public class GenreService {
     @PostConstruct
     public void loadData() {
         if(genreRepository.findAll().size() == 0) {
-            RestTemplate restTemplate = new RestTemplate();
-            String APIKey = "272f8904aff5923c030b53292132aec4";
+            try {
+                String APIKey = "272f8904aff5923c030b53292132aec4";
 
-            GenreCollection genres = restTemplate.getForObject(
-                    "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
-                            APIKey + "&language=en-US", GenreCollection.class);
+                URL jsonURL = new URL("https://api.themoviedb.org/3/genre/movie/list?api_key=" +
+                        APIKey + "&language=en-US");
 
-            genreRepository.saveAll(genres.getGenres());
+                List<Genre> genres = JsonPathUtil.getMappedEntities(jsonURL, "$.genres",
+                        new TypeRef<List<Genre>>(){});
 
+                genreRepository.saveAll(genres);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

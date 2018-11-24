@@ -1,6 +1,8 @@
 package moviewebservice.util;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import moviewebservice.model.Genre;
 import moviewebservice.model.Movie;
 import moviewebservice.model.Rating;
@@ -89,10 +91,12 @@ public class MovieRaw {
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "id='" + id + '\'' +
+        return "MovieRaw{" +
+                "id=" + id +
                 ", title='" + title + '\'' +
                 ", overview='" + overview + '\'' +
+                ", poster_path='" + poster_path + '\'' +
+                ", genre_ids=" + genre_ids +
                 '}';
     }
 }

@@ -1,17 +1,22 @@
 package moviewebservice.service;
 
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.TypeRef;
 import moviewebservice.model.Movie;
-import moviewebservice.model.MovieGenre;
 import moviewebservice.repository.GenreRepository;
 import moviewebservice.repository.MovieGenreRepository;
 import moviewebservice.repository.MovieRepository;
-import moviewebservice.util.MovieRawCollection;
+import moviewebservice.util.JsonPathUtil;
+import moviewebservice.util.MovieRaw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -37,18 +42,26 @@ public class MovieService {
             String APIKey = "272f8904aff5923c030b53292132aec4";
 
             for(int i = 1; i <= pages; i++) {
-                MovieRawCollection movieRawCollection = restTemplate.getForObject(
-                        "https://api.themoviedb.org/3/movie/top_rated?api_key="+
-                                APIKey +"&language=en-US&page=" + i,
-                        MovieRawCollection.class
-                );
 
-                movieRawCollection.initGenreRepository(genreRepository);
+                try {
+                    URL jsonURL = new URL("https://api.themoviedb.org/3/movie/top_rated?api_key="+
+                                APIKey +"&language=en-US&page=" + i);
 
-                List<Movie> movies = movieRawCollection.
-                        buildMovieCollection().getResults();
+                    List<MovieRaw> movieRaws =
+                            JsonPathUtil.getMappedEntities(jsonURL, "$.results[*]",
+                                            new TypeRef<List<MovieRaw>>(){});
 
-                movieRepository.saveAll(movies);
+                    List<Movie> movies = new ArrayList<>();
+
+                    for(MovieRaw movieRaw : movieRaws) {
+                        movieRaw.setGenreRepository(genreRepository);
+                        movies.add(movieRaw.buildMovie());
+                    }
+
+                    movieRepository.saveAll(movies);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
