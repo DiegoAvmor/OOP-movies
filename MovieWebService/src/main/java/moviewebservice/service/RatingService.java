@@ -6,15 +6,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
- *
- * @author diego
+ *<h> Clase anotada como servicio el cual su unica funcion es la parte del consumo
+ * de un servicio tercero para devolver los ratings de una pelicula.
  */
 @Service
 public class RatingService {
     //Constructor vacio
     public RatingService(){}
 
-    //Metodo que consume el api para obtener el rating de una pelicula apartir de su ip
+    /**
+     * <p> Metodo que recibe como parametro el identificador de la pelicula y llama a un sevicio tercero
+     * para realizar la obtencion de los rating de dicha pelicula.
+     * @param movie_id int que representa el identificador de la pelicula
+     * @return Devuelve un Objeto tipo Rating
+     */
     public Rating getRatingByMovieId(int movie_id)
     {
         float rt1,rt2,rt3;
@@ -31,7 +36,6 @@ public class RatingService {
         rt3= movieRatingRaw.getMetascore();
         //--------------------------------------------------------------------------------
         Rating movieRating= new Rating(rt1,rt3,rt2);
-        movieRating.giveTotalScore();
         System.out.print(movieRating.toString());
         return movieRating;
     }
