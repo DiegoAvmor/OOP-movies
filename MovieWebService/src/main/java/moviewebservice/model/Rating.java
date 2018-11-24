@@ -1,92 +1,95 @@
 package moviewebservice.model;
 
 /**
- *
- * @author diego
+ *<h>Clase que contiene unicamente los atributos que representan ratings obtenidos
+ * por el uso de servicios terceros y un contructor que asigna el promedio de entre
+ * los ratings obtenidos.
  */
 public class Rating {
     //--------TheMovieDB-------------
-    private float vote_average=0; //calificacion de TheMovieDB float 0-10
+    private float TheMovieDB=0; //calificacion de TheMovieDB float 0-10
     //--------OMDB------------------
-    private float Metascore=0; // 0-100
-    private float imdbRating=0; //0-10(int/float)
+    private float MetaScore=0; // 0-100
+    private float Imd=0; //0-10(int/float)
     //----------General-----------------
-    private float totalScore=0;
+    private float AvarageScore=0;
 
     public Rating(){};
-
+    
     public Rating(float vote_average,float Metascore, float imdbRating)
     {
-        this.vote_average= vote_average;
-        this.Metascore= Metascore;
-        this.imdbRating= imdbRating;
-    }
-
-    public void giveTotalScore()
-    {
-        this.totalScore= (((Metascore*10)/100)+this.vote_average+this.imdbRating)/3;
-    }
-    /**
-     * @return the vote_average
-     */
-    public float getVote_average() {
-        return vote_average;
+        this.TheMovieDB= vote_average;
+        this.MetaScore= Metascore;
+        this.Imd= imdbRating;
+        //En muchos casos no hay un rating existente ne Metascore, por lo tanto debemos realizar casos
+        if(Metascore!=0)
+        {
+          this.AvarageScore= (((Metascore*10)/100)+this.TheMovieDB+this.Imd)/3;   
+        }
+        else{this.AvarageScore= (this.TheMovieDB + this.Imd)/2;}
     }
 
     /**
-     * @param vote_average the vote_average to set
+     * @return the TheMovieDB
      */
-    public void setVote_average(float vote_average) {
-        this.vote_average = vote_average;
+    public float getTheMovieDB() {
+        return TheMovieDB;
     }
 
     /**
-     * @return the Metascore
+     * @param TheMovieDB the TheMovieDB to set
      */
-    public float getMetascore() {
-        return Metascore;
+    public void setTheMovieDB(float TheMovieDB) {
+        this.TheMovieDB = TheMovieDB;
     }
 
     /**
-     * @param Metascore the Metascore to set
+     * @return the MetaScore
      */
-    public void setMetascore(int Metascore) {
-        this.Metascore = Metascore;
+    public float getMetaScore() {
+        return MetaScore;
     }
 
     /**
-     * @return the imdbRating
+     * @param MetaScore the MetaScore to set
      */
-    public float getImdbRating() {
-        return imdbRating;
+    public void setMetaScore(float MetaScore) {
+        this.MetaScore = MetaScore;
     }
 
     /**
-     * @param imdbRating the imdbRating to set
+     * @return the Imd
      */
-    public void setImdbRating(float imdbRating) {
-        this.imdbRating = imdbRating;
+    public float getImd() {
+        return Imd;
     }
 
     /**
-     * @return the totalScore
+     * @param Imd the Imd to set
      */
-    public float getTotalScore() {
-        return totalScore;
+    public void setImd(float Imd) {
+        this.Imd = Imd;
     }
 
     /**
-     * @param totalScore the totalScore to set
+     * @return the AvarageScore
      */
-    public void setTotalScore(float totalScore) {
-        this.totalScore = totalScore;
+    public float getAvarageScore() {
+        return AvarageScore;
+    }
+
+    /**
+     * @param AvarageScore the AvarageScore to set
+     */
+    public void setAvarageScore(float AvarageScore) {
+        this.AvarageScore = AvarageScore;
     }
     @Override
     public String toString()
     {
-        return "TheMovieDB: "+ this.getVote_average()+"\n"+
-                "Imd: "+ this.getImdbRating()+"\n"+
-                "Metacritic: "+ this.getMetascore()+"\n"+
-                "TotalScore: "+ this.getTotalScore();
+        return "TheMovieDB: "+ this.getTheMovieDB()+"\n"+
+                "Imd: "+ this.getImd()+"\n"+
+                "Metacritic: "+ this.getMetaScore()+"\n"+
+                "TotalScore: "+ this.getAvarageScore();
     }
 }

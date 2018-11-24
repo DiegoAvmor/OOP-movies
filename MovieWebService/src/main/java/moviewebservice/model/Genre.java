@@ -7,13 +7,19 @@ import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <h>Clase que anotada como entitad que es mapeado de forma directa a la tabla
+ * genres ubicada en la base de datos. Consiste unicamente de dos atributos y sus
+ * sets and gets correspondientes.
+ * @author diego
+ */
 @Entity
 @Table(name = "genres")
 public class Genre {
     @Id
     private Integer id;
     private String name;
-
+//------------Sets and Gets-------------------
     public Integer getId() {
         return id;
     }
