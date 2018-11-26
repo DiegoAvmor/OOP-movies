@@ -1,3 +1,7 @@
-Esta rama tiene un proyecto de Maven demo de Hibernate y REST en Spring Boot.
+## Propósito
+Esta rama contiene una versión adelantada de la API. Pretende solucionar errores funcionales, de diseño, estilo y cualquier otro que pueda surgir.
 
-IMPORTANTE: Antes de correr el programa es necesario cambiar las credenciales del archivo properties del proyecto (movies-service/src/main/resources/application.properties) y crear una base de datos en MySQL llamada 'movies_service'
+## Correr la aplicación
+Para exitosamente ejecutar la aplicación, es necesario lo siguiente:
+- Crear una base de datos de MySQL nombrada `movies_service`.
+- Cambiar las credenciales de la base de datos en el archivo `MovieWebService/src/main/resources/applicacion.properties`.
