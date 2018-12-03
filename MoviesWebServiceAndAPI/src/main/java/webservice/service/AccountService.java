@@ -18,6 +18,11 @@ public class AccountService {
 		accountRepository.save(account);
 	}
 
+	public  void updateAccount(Account account)
+	{
+		accountRepository.save(account);
+	}
+
 	public boolean existsById(Account account) {
 		return accountRepository.existsById(account.getUsername());
 	}
