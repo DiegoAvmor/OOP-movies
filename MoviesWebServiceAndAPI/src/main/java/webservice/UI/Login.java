@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import webservice.controller.AccountController;
 import webservice.model.Account;
-
 /**
  * Clase que extiende a Window el cual contiene los metodos y constructores para realizar
  * de forma concreta las acciones a realizar de la ventana Log-In.
@@ -24,9 +23,11 @@ public class Login extends Window {
     private PasswordField password;
     private Button btnLogin;
 
+
     public Login()
     {
         super("Login to existing account");
+        //this.main=main;
         VerticalLayout vrt= new VerticalLayout();
         //---------Configuracion UI del TextField---------------
         username= new TextField();
@@ -80,6 +81,8 @@ public class Login extends Window {
             aux= new Notification("Success","Welcome!", Notification.TYPE_HUMANIZED_MESSAGE);
             aux.setPosition(Position.BOTTOM_CENTER);
             aux.show(Page.getCurrent());
+            MainView mainView= (MainView) Page.getCurrent().getUI();
+            mainView.changeTopLayout(account);
             this.close();
         }
         else

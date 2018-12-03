@@ -15,6 +15,11 @@ public class AccountController {
         accountService.createAccount(account);
     }
 
+    public void updateAccount(Account account)
+    {
+        accountService.updateAccount(account);
+    }
+
     public boolean existsById(Account account) {
         return accountService.existsById(account);
     }

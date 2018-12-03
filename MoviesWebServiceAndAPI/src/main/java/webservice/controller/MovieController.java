@@ -2,6 +2,8 @@ package webservice.controller;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("movies")
+@CacheConfig(cacheNames={"movies"})
 public class MovieController {
     
     @Autowired
@@ -28,11 +31,13 @@ public class MovieController {
     @Autowired
     private MovieFactory movieFactory;
 
+    @Cacheable(key="#id")
     @GetMapping("/{id}")
     public Movie getMovie(@PathVariable int id) {
         return movieFactory.initRating(movieService.getMovieById(id));
     }
 
+    @Cacheable(key="#id")
     @GetMapping(value = "/{id}/poster", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getPosterByMovieId(@PathVariable int id) throws IOException {
         Movie movie = movieService.getMovieById(id);
@@ -40,6 +45,7 @@ public class MovieController {
         return IOUtils.toByteArray(in);
     }
 
+    @Cacheable
     @GetMapping
     public List<Movie> getAllMovies() {
         List<Movie> movies = movieFactory.initRatings(movieService.getAllMovies());
@@ -51,6 +57,7 @@ public class MovieController {
         return movieService.getAllMovies(filter);
     }
 
+    @Cacheable(key="#ids")
     @GetMapping("genres/{ids}")
     public List<Movie> getMoviesByGenres(List<Integer> ids) {
         return movieFactory.initRatings(movieService.getMoviesByGenreIds(ids));

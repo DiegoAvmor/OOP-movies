@@ -27,7 +27,7 @@ public class MainView extends UI {
     private AccountCreation accountCreationWindow;
 
 
-    private Account sessionAccount = null;
+    public Account sessionAccount = null;
 
     private int columns = 5;
 
@@ -142,11 +142,13 @@ public class MainView extends UI {
     public void changeTopLayout(Account prof)
     {
         this.sessionAccount = prof;
-        // top.removeComponent(loginButton);
+        toolbar.removeComponent(loginButton);
+        toolbar.removeComponent(accountButton);
         //-----------------MenuBar----------------
         header= new MenuBar();
         header.setStyleName(ValoTheme.TEXTFIELD_ALIGN_RIGHT);
-        // top.addComponent(header);
+        toolbar.addComponent(header);
+        toolbar.setComponentAlignment(header,Alignment.MIDDLE_LEFT);
         MenuBar.MenuItem profile= header.addItem(sessionAccount.getUsername(),null);
         //------Se agregan los items en el subMenu-----------
         MenuBar.MenuItem Infor= profile.addItem("UserInfo", new MenuBar.Command() {
@@ -178,12 +180,18 @@ public class MainView extends UI {
      */
     public void loginEnable()
     {
-        // top.removeComponent(header);
+        toolbar.removeComponent(header);
         sessionAccount =null; //Se vuelve nula el perfil de la sesion actual.
         header=null;//Se vuelve nulo el submenu
-        // top.addComponent(loginButton);
+        toolbar.addComponents(accountButton,loginButton);
+        toolbar.setComponentAlignment(accountButton,Alignment.MIDDLE_RIGHT);
+        toolbar.setComponentAlignment(loginButton,Alignment.MIDDLE_RIGHT);
     }
 
+    /**
+     * Metodo que se encarga de hacer el actualizado de peliculas, hace el uso del
+     * search bar para mostrar las peliculas que tienen relacion con lo que se ha introducido
+     */
     public void updateList() {
         movieList = movieController.getAllMovies(searchBar.getValue());
 

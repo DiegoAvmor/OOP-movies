@@ -26,7 +26,7 @@ public class MovieWindow extends Window {
     public MovieWindow(MoviePoster moviePoster)
     {
         super(moviePoster.getMovie().getTitle(), moviePoster);
-
+        MainView main= (MainView) UI.getCurrent().getUI();
         // Inicialización de los atributos
         horizontalLayout = new HorizontalLayout();
         personalRatingLayout = new CssLayout();
@@ -50,6 +50,11 @@ public class MovieWindow extends Window {
         horizontalLayout.addComponents(poster, infoLayout);
         infoLayout.addComponents(overview, personalRatingLayout, ratings);
         personalRatingLayout.addComponents(personalRating, rateButton);
+        if(main.sessionAccount!=null)
+        {
+            personalRatingLayout.setEnabled(true);
+        }
+        else {personalRatingLayout.setEnabled(false);}
         personalRatingLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
     	// Tamaño del poster
