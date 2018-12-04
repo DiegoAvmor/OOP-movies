@@ -3,73 +3,47 @@ package webservice.UI;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import webservice.controller.PersonalRatingController;
+import webservice.model.PersonalRating;
 import webservice.model.Rating;
+import webservice.util.PersonalRatingId;
 
 /**
  * <h>Clase que extiende a Window que tiene como accion principal
  * crear la subventana para la pelicula.
  */
+@Component
 public class MovieWindow extends Window {
+
+    @Autowired
+    private PersonalRatingController personalRatingController;
 
     private final HorizontalLayout horizontalLayout;
     private final VerticalLayout infoLayout;
-    private final CssLayout personalRatingLayout;
+    private final CssLayout interactiveRatingLayout;
+    private final HorizontalLayout personalRatingLayout;
     private final Label overview;
     private final Grid<Rating> ratings;
-    private final Rating rating;
-    private final Image poster;
-    private final Label personalRatingHeader;
+    private Rating rating;
+    private MoviePoster moviePoster;
     private final TextField personalRating;
     private final Button rateButton;
-    private final Label ratingsHeader;
+    private final Label label;
 
-    public MovieWindow(MoviePoster moviePoster)
+    public MovieWindow()
     {
-        super(moviePoster.getMovie().getTitle(), moviePoster);
-        MainView main= (MainView) UI.getCurrent().getUI();
-        // Inicialización de los atributos
+        super();
         horizontalLayout = new HorizontalLayout();
-        personalRatingLayout = new CssLayout();
+        interactiveRatingLayout = new CssLayout();
         infoLayout = new VerticalLayout();
-        rating = moviePoster.getMovie().getRating();
         personalRating = new TextField();
         rateButton = new Button("Rate");
-        ratingsHeader = new Label();
-        personalRatingHeader = new Label();
         overview = new Label();
         ratings = new Grid<>(Rating.class);
-        poster = moviePoster;
-
-        personalRatingHeader.setContentMode(ContentMode.HTML);
-        ratingsHeader.setContentMode(ContentMode.HTML);
-
-        personalRatingHeader.setValue("<h3>Your rating</h3>");
-        ratingsHeader.setValue("<h2><b>Ratings from external sources</b></h2>");
-
-        // Añadir componentes a los layouts
-        horizontalLayout.addComponents(poster, infoLayout);
-        infoLayout.addComponents(overview, personalRatingLayout, ratings);
-        personalRatingLayout.addComponents(personalRating, rateButton);
-        if(main.sessionAccount!=null)
-        {
-            personalRatingLayout.setEnabled(true);
-        }
-        else {personalRatingLayout.setEnabled(false);}
-        personalRatingLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-
-    	// Tamaño del poster
-        poster.setWidth("300px");
-        poster.setHeight("450px");
-
-        // Colocar ratings en el grid
-        ratings.setItems(rating);
-        ratings.setHeight("77px");
-
-    	// Colocar sinopsis de la película con formato
-        overview.setContentMode(ContentMode.HTML); // Formato con anotaciones HTML
-    	overview.setWidth("500px");
-    	overview.setValue(String.format("<h2><b>Overview</b></h2><p>%s</p>",
-                moviePoster.getMovie().getOverview()));
+        personalRatingLayout = new HorizontalLayout();
+        label = new Label();
 
         // Configuración de la ventana
         setResizable(false);
@@ -79,6 +53,78 @@ public class MovieWindow extends Window {
         setWidth("950px");
         setClosable(true);
         setDraggable(false);
+    }
+
+    private void rate() {
+        MainView mainView = (MainView) UI.getCurrent().getUI();
+        PersonalRatingId id = new PersonalRatingId(moviePoster.getMovie().getId(),
+                mainView.getSessionAccount().getUsername());
+        personalRatingController.loadRating(new PersonalRating(id,
+                Integer.parseInt(personalRating.getValue())));
+    }
+
+    public void loadData(MoviePoster moviePoster) {
+
+        this.moviePoster = moviePoster;
+
+        // Tamaño del moviePoster
+        this.moviePoster.setWidth("300px");
+        this.moviePoster.setHeight("450px");
+
+        this.setCaption(moviePoster.getMovie().getTitle());
+        rating = moviePoster.getMovie().getRating();
+
+        // Colocar ratings en el grid
+        ratings.setItems(rating);
+        ratings.setHeight("77px");
+
+        overview.setValue(String.format("<h2><b>Overview</b></h2><p>%s</p>",
+                moviePoster.getMovie().getOverview()));
+
+        MainView main= (MainView) UI.getCurrent().getUI();
+
+        if(main.getSessionAccount() !=null)
+            interactiveRatingLayout.setEnabled(true);
+        else
+            interactiveRatingLayout.setEnabled(false);
+
+        horizontalLayout.removeAllComponents();
+
+        // Añadir componentes a los layouts
+        horizontalLayout.addComponents(moviePoster, infoLayout);
+        infoLayout.addComponents(overview, personalRatingLayout, ratings);
+        personalRatingLayout.addComponents(interactiveRatingLayout, label);
+        interactiveRatingLayout.addComponents(personalRating, rateButton);
+
+        rateButton.addListener(e -> rate());
+
+        interactiveRatingLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
+        // Colocar sinopsis de la película con formato
+        overview.setContentMode(ContentMode.HTML); // Formato con anotaciones HTML
+        overview.setWidth("500px");
+
+        label.setValue(findPersonalRating());
+
         setContent(horizontalLayout);
+    }
+
+    private String findPersonalRating() {
+        MainView main = (MainView) UI.getCurrent().getUI();
+        String prompt = "Your rating: ";
+
+        if(main.getSessionAccount() != null) {
+            PersonalRatingId id = new PersonalRatingId(moviePoster.getMovie().getId(),
+                    main.getSessionAccount().getUsername());
+            if(personalRatingController.existsById(id))
+                prompt += Integer.toString(personalRatingController.
+                        getPersonalRatingById(id).getRating());
+            else
+                prompt = "Not rated yet";
+        }
+        else
+            prompt = "Login to rate";
+
+        return prompt;
     }
 }

@@ -11,12 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import webservice.controller.MovieController;
 import webservice.model.Movie;
 import webservice.model.Account;
+
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @SpringUI(path="")
 public class MainView extends UI {
+
+    @Autowired
+    private MovieWindow movieWindow;
+
     @Autowired
     private MovieController movieController;
 
@@ -26,8 +32,10 @@ public class MainView extends UI {
     @Autowired
     private AccountCreation accountCreationWindow;
 
+    @Autowired
+    AccountInfoWindow accountInfoWindow;
 
-    public Account sessionAccount = null;
+    private Account sessionAccount = null;
 
     private int columns = 5;
 
@@ -48,7 +56,6 @@ public class MainView extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-        getMovies();
         parentLayout.addComponents(toolbar, moviesLayout);
 
         toolbar.setSizeFull();
@@ -71,7 +78,6 @@ public class MainView extends UI {
         filtering.addComponents(searchBar, clearFilterButton, searchButton);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        loadPosters();
         setContent(parentLayout);
     }
 
@@ -100,7 +106,9 @@ public class MainView extends UI {
     public void showMovieWindow(MoviePoster poster){
         MoviePoster moviePoster = new MoviePoster(poster.getMovie());
         moviePoster.setCaption(null);
-        MovieWindow movieWindow = new MovieWindow(moviePoster);
+
+        movieWindow.loadData(moviePoster);
+
         UI.getCurrent().addWindow(movieWindow);
     }
 
@@ -111,6 +119,11 @@ public class MainView extends UI {
     {
         try{
             movieList = movieController.getAllMovies();
+
+            if(movieList == null) {
+                System.out.println("movieList is null");
+                System.exit(-1);
+            }
         }
         catch(NullPointerException ll){System.out.print("No Movie available in the database");}
     }
@@ -120,6 +133,7 @@ public class MainView extends UI {
      * a cada poster un evento el cual al ser oprimidos este abre en la pantalla actual una subventana
      * con la informacion de la pelicula seleccionada previamente.
      */
+
     public void loadPosters() {
         for(Movie movie : movieList) {
             MoviePoster moviePoster = new MoviePoster(movie);
@@ -132,6 +146,12 @@ public class MainView extends UI {
             showPopup = e -> showMovieWindow(moviePoster);
             moviePoster.addClickListener(showPopup);
         }
+    }
+
+    @PostConstruct
+    public void loadStartPosters() {
+        getMovies();
+        loadPosters();
     }
 
     /**
@@ -171,8 +191,8 @@ public class MainView extends UI {
      */
     public  void profileWindow()
     {
-        ProfileWindow prw= new ProfileWindow(sessionAccount);
-        UI.getCurrent().addWindow(prw);
+        accountInfoWindow.loadData(sessionAccount);
+        UI.getCurrent().addWindow(accountInfoWindow);
     }
 
     /**
@@ -195,10 +215,24 @@ public class MainView extends UI {
     public void updateList() {
         movieList = movieController.getAllMovies(searchBar.getValue());
 
+        System.out.println("\nSearch bar value = " + "'" + searchBar.getValue() + "'");
+        System.out.println("Matches");
+        for(Movie movie : movieList)
+            System.out.println("   -> " + movie.getTitle());
+        System.out.println();
+
         moviesLayout.removeAllComponents();
         moviePosters.clear();
 
         loadPosters();
+    }
+
+    public Account getSessionAccount() {
+        return sessionAccount;
+    }
+
+    public void setSessionAccount(Account sessionAccount) {
+        this.sessionAccount = sessionAccount;
     }
 }
 

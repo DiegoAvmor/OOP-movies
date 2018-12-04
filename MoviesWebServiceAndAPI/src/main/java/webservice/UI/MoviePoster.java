@@ -2,6 +2,8 @@ package webservice.UI;
 
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Image;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import webservice.model.Movie;
 
 /**
