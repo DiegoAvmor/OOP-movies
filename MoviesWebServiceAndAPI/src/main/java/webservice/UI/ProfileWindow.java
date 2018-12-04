@@ -4,32 +4,52 @@ package webservice.UI;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import webservice.controller.AccountController;
 import webservice.model.Account;
 
 /**
  * Clase que contiene el constructor visual de la subVentana ProfileWindow y metodos necesarios
  * para realizar la parte de edicion de datos del perfil.
  */
+@Component
 public class ProfileWindow extends Window {
 
-    VerticalLayout userInfo= new VerticalLayout();
-    HorizontalLayout passInfo= new HorizontalLayout();
-    HorizontalLayout userInfoButtons= new HorizontalLayout();
+    @Autowired
+    AccountController accountController;
+
+    @Autowired
+    EditPassWindow editPassWindow;
+
+    VerticalLayout userInfo;
+    HorizontalLayout passInfo;
+    HorizontalLayout userInfoButtons;
+    TextArea descriptionArea;
     Label password;
     Button editpass;
-    Label description;
+    Label descriptionTittle;
     Button editInfo;
     Button confirmInfo;
-    ProfileWindow(Account prof)
-    {
-        super(prof.getUsername());
-        //--------Aqui se va a crear los objetos necesarios para mostrar la informacion del Usuario-----------
 
+    public ProfileWindow(){}
+
+    public void ProfileWindowInit(Account prof)
+    {
+        setCaption(prof.getUsername());
+        //--------Aqui se va a crear los objetos necesarios para mostrar la informacion del Usuario-----------
+        userInfo= new VerticalLayout();
+        passInfo= new HorizontalLayout();
+        userInfoButtons= new HorizontalLayout();
         editInfo= new Button("Edit");
         editpass= new Button(VaadinIcons.PENCIL);
         confirmInfo= new Button(VaadinIcons.CHECK);
         password= new Label();
-        description= new Label();
+        descriptionArea= new TextArea();
+        descriptionArea.setWordWrap(true);
+        descriptionArea.setSizeFull();
+        descriptionTittle= new Label();
 
         password.setValue("Change Password");
         passInfo.addComponents(password,editpass);
@@ -43,14 +63,18 @@ public class ProfileWindow extends Window {
         userInfoButtons.setComponentAlignment(confirmInfo,Alignment.MIDDLE_CENTER);
 
 
-        description.setContentMode(ContentMode.HTML); // Formato con anotaciones HTML
-        description.setWidth("500px");
-        description.setValue(String.format("<h2><b>Profile Description</b></h2><p>%s</p>",prof.getSummary()));
-        if(prof.getSummary()==null){description.setValue("<h2><b>Profile Description</b></h2><p></p>"+"No user description yet.");}
+        descriptionTittle.setContentMode(ContentMode.HTML); // Formato con anotaciones HTML
+        descriptionTittle.setWidth("500px");
+        descriptionTittle.setValue("<h2><b>Profile Description</b></h2><p></p>");
+        if(prof.getSummary()==null){descriptionArea.setValue("No profile description yet.");}
+        else{descriptionArea.setValue(prof.getSummary());}
+        descriptionArea.setEnabled(false);
 
         editpass.addClickListener(e-> editPassword(prof));
+        editInfo.addClickListener(e-> descriptionArea.setEnabled(true));
+        confirmInfo.addClickListener(e-> updateDescription(prof));
 
-        userInfo.addComponents(description,userInfoButtons,passInfo);
+        userInfo.addComponents(descriptionTittle,descriptionArea,userInfoButtons,passInfo);
 
         //-----Configuracion de la ventana---------
         setResizable(false);
@@ -69,7 +93,27 @@ public class ProfileWindow extends Window {
      */
     public  void editPassword(Account prof)
     {
-        EditPassWindow infoWindow= new EditPassWindow(prof);
-        UI.getCurrent().addWindow(infoWindow);
+        editPassWindow.EditPassWindowInit(prof);
+        UI.getCurrent().addWindow(editPassWindow);
+    }
+
+    /**
+     * Metodo cuyo funcion es realizar la actualizacion de la descripcion
+     * del usuario en la base de datos.
+     * @param prof
+     */
+    public void updateDescription(Account prof)
+    {
+        if(descriptionArea.isEnabled()) {
+            prof.setSummary(descriptionArea.getValue());
+        try{
+            prof=accountController.editAccountDescription(prof);
+        }
+        catch (NullPointerException e){System.out.print("\nError Null");}
+
+        descriptionArea.setEnabled(false);
+        MainView main= (MainView) UI.getCurrent().getUI();
+        main.sessionAccount=prof;
+        }
     }
 }

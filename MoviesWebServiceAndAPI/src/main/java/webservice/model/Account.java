@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "accounts")
-@XmlRootElement
 public class Account {
 	@Id
 	private String username;
