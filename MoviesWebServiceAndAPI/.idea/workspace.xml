@@ -87,7 +87,7 @@
       <file leaf-file-name="AccountInfoWindow.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/webservice/UI/AccountInfoWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
+            <state relative-caret-position="1368">
               <caret line="87" column="50" lean-forward="true" selection-start-line="87" selection-start-column="50" selection-end-line="87" selection-end-column="50" />
             </state>
           </provider>
@@ -387,7 +387,7 @@
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="TODO" order="10" />
-      <window_info active="true" anchor="bottom" id="Messages" order="3" visible="true" weight="0.3289256" />
+      <window_info anchor="bottom" id="Messages" order="3" weight="0.3289256" />
       <window_info anchor="right" id="Palette&#9;" order="1" />
       <window_info id="Image Layers" order="4" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
@@ -398,9 +398,9 @@
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.553719" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="0" />
-      <window_info content_ui="combo" id="Project" order="5" sideWeight="0.6034483" visible="true" weight="0.20556024" />
+      <window_info content_ui="combo" id="Project" order="5" sideWeight="0.60330576" visible="true" weight="0.20556024" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.3983471" />
-      <window_info id="Structure" order="6" sideWeight="0.39655173" side_tool="true" visible="true" weight="0.20556024" />
+      <window_info id="Structure" order="6" sideWeight="0.3966942" side_tool="true" visible="true" weight="0.20556024" />
       <window_info anchor="right" id="Ant Build" order="6" weight="0.25" />
       <window_info id="UI Designer" order="1" />
       <window_info anchor="right" id="Theme Preview" order="2" />
@@ -837,7 +837,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/webservice/UI/AccountInfoWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
+        <state relative-caret-position="1368">
           <caret line="87" column="50" lean-forward="true" selection-start-line="87" selection-start-column="50" selection-end-line="87" selection-end-column="50" />
         </state>
       </provider>
