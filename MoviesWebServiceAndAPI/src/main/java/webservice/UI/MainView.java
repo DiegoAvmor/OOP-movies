@@ -8,7 +8,6 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
-import webservice.controller.AccountController;
 import webservice.controller.MovieController;
 import webservice.model.Movie;
 import webservice.model.Account;
@@ -34,7 +33,7 @@ public class MainView extends UI {
     private AccountCreation accountCreationWindow;
 
     @Autowired
-    private AccountInfoWindow accountInfoWindow;
+    private ProfileWindow profileWindow;
 
     private Account sessionAccount = null;
 
@@ -193,8 +192,8 @@ public class MainView extends UI {
      */
     public  void profileWindow()
     {
-        accountInfoWindow.loadData(sessionAccount);
-        UI.getCurrent().addWindow(accountInfoWindow);
+        profileWindow.ProfileWindowInit(sessionAccount);
+        UI.getCurrent().addWindow(profileWindow);
     }
 
     /**

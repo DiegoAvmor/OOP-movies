@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import webservice.controller.AccountController;
+import webservice.controller.PersonalRatingController;
 import webservice.model.Account;
+import webservice.model.PersonalRating;
+
+import java.util.List;
 
 /**
  * Clase que contiene el constructor visual de la subVentana ProfileWindow y metodos necesarios
@@ -23,6 +27,9 @@ public class ProfileWindow extends Window {
     @Autowired
     EditPassWindow editPassWindow;
 
+    @Autowired
+    private PersonalRatingController personalRatingController;
+
     VerticalLayout userInfo;
     HorizontalLayout passInfo;
     HorizontalLayout userInfoButtons;
@@ -32,6 +39,7 @@ public class ProfileWindow extends Window {
     Label descriptionTittle;
     Button editInfo;
     Button confirmInfo;
+    private Grid<PersonalRating> grid;
 
     public ProfileWindow(){}
 
@@ -50,6 +58,8 @@ public class ProfileWindow extends Window {
         descriptionArea.setWordWrap(true);
         descriptionArea.setSizeFull();
         descriptionTittle= new Label();
+        grid = new Grid<>(PersonalRating.class);
+        grid.setSizeFull();
 
         password.setValue("Change Password");
         passInfo.addComponents(password,editpass);
@@ -74,7 +84,9 @@ public class ProfileWindow extends Window {
         editInfo.addClickListener(e-> descriptionArea.setEnabled(true));
         confirmInfo.addClickListener(e-> updateDescription(prof));
 
-        userInfo.addComponents(descriptionTittle,descriptionArea,userInfoButtons,passInfo);
+        userInfo.addComponents(descriptionTittle,descriptionArea,userInfoButtons,passInfo, grid);
+
+        loadPersonalRatings(prof);
 
         //-----Configuracion de la ventana---------
         setResizable(false);
@@ -115,5 +127,11 @@ public class ProfileWindow extends Window {
         MainView main= (MainView) UI.getCurrent().getUI();
         main.setSessionAccount(prof);
         }
+    }
+
+    public void loadPersonalRatings(Account account) {
+        List<PersonalRating> gridFill = personalRatingController.getPersonalRatingsByUsername(account.getUsername());
+        grid.setColumns("personalRatingId.id", "rating");
+        grid.setItems(gridFill);
     }
 }
