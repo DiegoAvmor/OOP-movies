@@ -6,38 +6,44 @@ import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import webservice.controller.AccountController;
 import webservice.model.Account;
 
+@Component
 public class EditPassWindow extends Window {
 
     @Autowired
     private AccountController accountController;
 
-    TextField username;
     TextField password;
     TextField passConfirm;
     Button confirmBt;
     VerticalLayout editForm;
     Account profToEdit;
 
-    public EditPassWindow(Account prof)
+    public EditPassWindow(){}
+
+    /**
+     * Metodo que tiene como unico funcionamiento el iniciar los elementos
+     * de la ventana
+     * @param prof
+     */
+    public void EditPassWindowInit(Account prof)
     {
-        super("Change Password");
+        setCaption("Change Password");
         this.profToEdit= prof;
 
         editForm= new VerticalLayout();
         confirmBt= new Button("Confirm Changes");
-        //username= new TextField("Username");
         password= new TextField("Password");
         passConfirm= new TextField("Confirm Password");
         //------------------------------------------------------
-        //username.setValue(prof.getUsername());
         confirmBt.setStyleName("primary");
         confirmBt.setIcon(VaadinIcons.CHECK);
         confirmBt.addClickListener(e->checkNewPassword());
 
-        editForm.addComponents(/*username,*/password,passConfirm,confirmBt);
+        editForm.addComponents(password,passConfirm,confirmBt);
         editForm.setComponentAlignment(password,Alignment.MIDDLE_CENTER);
         editForm.setComponentAlignment(passConfirm,Alignment.MIDDLE_CENTER);
         editForm.setComponentAlignment(confirmBt,Alignment.MIDDLE_CENTER);
@@ -61,8 +67,13 @@ public class EditPassWindow extends Window {
         Notification aux=null;
         if(password.getValue().equals(passConfirm.getValue()) &&(password.getValue().length()!=0&&passConfirm.getValue().length()!=0))
         {
-            //Actualizo informacion, falla al intentarlo
-            //accountController.updateAccount(this.profToEdit);
+            //Actualizo informacion
+            this.profToEdit.setPassword(passConfirm.getValue());
+            Account ac=accountController.updateAccountPassword(this.profToEdit);
+            this.profToEdit= ac;
+            MainView main= (MainView) UI.getCurrent().getUI();
+            main.setSessionAccount(ac);
+            this.close();
         }
         else {
             aux= new Notification("Password Confirmation failed",Notification.TYPE_WARNING_MESSAGE);

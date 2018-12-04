@@ -24,6 +24,9 @@ public class AccountInfoWindow extends Window {
     @Autowired
     private PersonalRatingController personalRatingController;
 
+    @Autowired
+    private EditPassWindow editPassWindow;
+
     private VerticalLayout userInfo= new VerticalLayout();
     private HorizontalLayout passInfo= new HorizontalLayout();
     private HorizontalLayout userInfoButtons= new HorizontalLayout();
@@ -81,8 +84,8 @@ public class AccountInfoWindow extends Window {
      */
     public  void editPassword(Account prof)
     {
-        EditPassWindow infoWindow= new EditPassWindow(prof);
-        UI.getCurrent().addWindow(infoWindow);
+        editPassWindow.EditPassWindowInit(prof);
+        UI.getCurrent().addWindow(editPassWindow);
     }
 
     public void loadData(Account account) {

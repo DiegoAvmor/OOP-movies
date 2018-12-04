@@ -8,6 +8,7 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
+import webservice.controller.AccountController;
 import webservice.controller.MovieController;
 import webservice.model.Movie;
 import webservice.model.Account;
@@ -33,7 +34,7 @@ public class MainView extends UI {
     private AccountCreation accountCreationWindow;
 
     @Autowired
-    AccountInfoWindow accountInfoWindow;
+    private AccountInfoWindow accountInfoWindow;
 
     private Account sessionAccount = null;
 
@@ -162,6 +163,7 @@ public class MainView extends UI {
     public void changeTopLayout(Account prof)
     {
         this.sessionAccount = prof;
+        //this.accountController=accountController;
         toolbar.removeComponent(loginButton);
         toolbar.removeComponent(accountButton);
         //-----------------MenuBar----------------

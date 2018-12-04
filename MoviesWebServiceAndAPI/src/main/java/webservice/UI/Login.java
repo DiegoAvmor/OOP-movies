@@ -23,7 +23,6 @@ public class Login extends Window {
     private PasswordField password;
     private Button btnLogin;
 
-
     public Login()
     {
         super("Login to existing account");
@@ -78,12 +77,24 @@ public class Login extends Window {
         account = new Account(username.getValue(),password.getValue().toString());
         if(accountController.existsById(account))
         {
-            aux= new Notification("Success","Welcome!", Notification.TYPE_HUMANIZED_MESSAGE);
-            aux.setPosition(Position.BOTTOM_CENTER);
-            aux.show(Page.getCurrent());
-            MainView mainView= (MainView) Page.getCurrent().getUI();
-            mainView.changeTopLayout(account);
-            this.close();
+            account= accountController.getAccount(account.getUsername());
+            if (account.getPassword().equals(password.getValue()))
+            {
+                aux= new Notification("Success","Welcome!", Notification.TYPE_HUMANIZED_MESSAGE);
+                aux.setPosition(Position.BOTTOM_CENTER);
+                aux.show(Page.getCurrent());
+                MainView mainView= (MainView) Page.getCurrent().getUI();
+                mainView.changeTopLayout(account);
+                //accountController.deleteAccount("Prueba");
+                this.close();
+            }
+            else
+            {
+                aux= new Notification("Username or Password incorrect",Notification.TYPE_WARNING_MESSAGE);
+                aux.setPosition(Position.BOTTOM_CENTER);
+                aux.show(Page.getCurrent());
+                account=null;
+            }
         }
         else
         {
