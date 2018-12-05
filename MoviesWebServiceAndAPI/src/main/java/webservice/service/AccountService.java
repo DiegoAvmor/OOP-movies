@@ -41,7 +41,12 @@ public class AccountService {
 	{
 		return accountRepository.findById(id).get();
 	}
-	public boolean existsById(Account account) {
+
+	public boolean exists(Account account) {
 		return accountRepository.existsById(account.getUsername());
+	}
+
+	public boolean existsById(String username) {
+		return accountRepository.existsById(username);
 	}
 }

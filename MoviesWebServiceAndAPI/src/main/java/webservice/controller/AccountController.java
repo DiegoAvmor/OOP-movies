@@ -5,16 +5,11 @@ import org.springframework.stereotype.Component;
 import webservice.model.Account;
 import webservice.service.AccountService;
 
-import javax.persistence.Query;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 @Component
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
-
 
     public void createAccount(Account account) {
         accountService.createAccount(account);
@@ -25,11 +20,15 @@ public class AccountController {
         return accountService.updateAccountPassword(account);
     }
 
-    public boolean existsById(Account account) {
-        return accountService.existsById(account);
+    public boolean exists(Account account) {
+        return accountService.exists(account);
     }
 
-    public  Account getAccount(String id)
+    public boolean existsById(String username) {
+        return accountService.existsById(username);
+    }
+
+    public Account getAccount(String id)
     {
         return accountService.getAccount(id);
     }
@@ -39,5 +38,7 @@ public class AccountController {
         return accountService.editAccountDescription(account);
     }
 
-    public  void deleteAccount(String id){accountService.deleteAccount(id);}
+    public  void deleteAccount(String id){
+        accountService.deleteAccount(id);
+    }
 }

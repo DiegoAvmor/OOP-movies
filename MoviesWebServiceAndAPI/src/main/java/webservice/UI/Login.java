@@ -74,10 +74,15 @@ public class Login extends Window {
     public void login()
     {
         Notification aux = null;
-        account = new Account(username.getValue(),password.getValue().toString());
-        if(accountController.existsById(account))
+
+        System.out.println("\nUsername text field = " + "'" + username.getValue() + "'\n");
+
+        account = new Account(username.getValue(), password.getValue());
+        if(accountController.exists(account))
         {
+
             account= accountController.getAccount(account.getUsername());
+            System.out.println(account.getUsername());
             if (account.getPassword().equals(password.getValue()))
             {
                 aux= new Notification("Success","Welcome!", Notification.TYPE_HUMANIZED_MESSAGE);
@@ -85,7 +90,6 @@ public class Login extends Window {
                 aux.show(Page.getCurrent());
                 MainView mainView= (MainView) Page.getCurrent().getUI();
                 mainView.changeTopLayout(account);
-                //accountController.deleteAccount("Prueba");
                 this.close();
             }
             else

@@ -33,7 +33,7 @@ public class MainView extends UI {
     private AccountCreation accountCreationWindow;
 
     @Autowired
-    private ProfileWindow profileWindow;
+    private AccountWindow accountWindow;
 
     private Account sessionAccount = null;
 
@@ -53,6 +53,7 @@ public class MainView extends UI {
     private HorizontalLayout toolbar = new HorizontalLayout();
     private CssLayout filtering = new CssLayout();
     private Button accountButton = new Button("Create account");
+    private CssLayout accountButtons = new CssLayout();
 
     @Override
     protected void init(VaadinRequest request) {
@@ -60,8 +61,9 @@ public class MainView extends UI {
 
         toolbar.setSizeFull();
         moviesLayout.setSizeFull();
-
-        toolbar.addComponents(filtering, accountButton, loginButton);
+        accountButtons.addComponents(accountButton, loginButton);
+        accountButtons.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        toolbar.addComponents(filtering, accountButtons);
         searchButton.setIcon(VaadinIcons.FILTER);
         clearFilterButton.setIcon(VaadinIcons.CLOSE_SMALL);
         searchBar.setPlaceholder("search by title...");
@@ -72,8 +74,7 @@ public class MainView extends UI {
 
         accountButton.setWidth(null);
 
-        toolbar.setComponentAlignment(loginButton, Alignment.MIDDLE_RIGHT);
-        toolbar.setComponentAlignment(accountButton, Alignment.MIDDLE_RIGHT);
+        toolbar.setComponentAlignment(accountButtons, Alignment.MIDDLE_RIGHT);
 
         filtering.addComponents(searchBar, clearFilterButton, searchButton);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
@@ -157,31 +158,31 @@ public class MainView extends UI {
     /**
      * Metodo que cambia la vista de forma que toma en cuenta de que se a
      * iniciado una session.
-     * @param prof
+     * @param account
      */
-    public void changeTopLayout(Account prof)
+    public void changeTopLayout(Account account)
     {
-        this.sessionAccount = prof;
-        //this.accountController=accountController;
-        toolbar.removeComponent(loginButton);
-        toolbar.removeComponent(accountButton);
-        //-----------------MenuBar----------------
+        this.sessionAccount = account;
+        toolbar.removeComponent(accountButtons);
+
+        // Configuración del MenuBar
         header= new MenuBar();
         header.setStyleName(ValoTheme.TEXTFIELD_ALIGN_RIGHT);
         toolbar.addComponent(header);
-        toolbar.setComponentAlignment(header,Alignment.MIDDLE_LEFT);
-        MenuBar.MenuItem profile= header.addItem(sessionAccount.getUsername(),null);
-        //------Se agregan los items en el subMenu-----------
-        MenuBar.MenuItem Infor= profile.addItem("UserInfo", new MenuBar.Command() {
+        toolbar.setComponentAlignment(header,Alignment.MIDDLE_RIGHT);
+        MenuBar.MenuItem accountMenuBar= header.addItem(sessionAccount.getUsername(),null);
+
+        // Se agregan los ítems en el sub menú
+        MenuBar.MenuItem accountInfo= accountMenuBar.addItem("Account Info", new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                profileWindow();//Evento que se realiza cuando se aprieta el item UserInfo
+                profileWindow();
             }
         });
-        MenuBar.MenuItem logout= profile.addItem("Log Out", new MenuBar.Command() {
+        MenuBar.MenuItem logout= accountMenuBar.addItem("Log Out", new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                loginEnable();//Evento que se realiza cuanod se aprieta el item Log-Out
+                loginEnable();
             }
         });
     }
@@ -192,8 +193,8 @@ public class MainView extends UI {
      */
     public  void profileWindow()
     {
-        profileWindow.ProfileWindowInit(sessionAccount);
-        UI.getCurrent().addWindow(profileWindow);
+        accountWindow.ProfileWindowInit(sessionAccount);
+        UI.getCurrent().addWindow(accountWindow);
     }
 
     /**
@@ -204,9 +205,8 @@ public class MainView extends UI {
         toolbar.removeComponent(header);
         sessionAccount =null; //Se vuelve nula el perfil de la sesion actual.
         header=null;//Se vuelve nulo el submenu
-        toolbar.addComponents(accountButton,loginButton);
-        toolbar.setComponentAlignment(accountButton,Alignment.MIDDLE_RIGHT);
-        toolbar.setComponentAlignment(loginButton,Alignment.MIDDLE_RIGHT);
+        toolbar.addComponents(accountButtons);
+        toolbar.setComponentAlignment(accountButtons,Alignment.MIDDLE_RIGHT);
     }
 
     /**

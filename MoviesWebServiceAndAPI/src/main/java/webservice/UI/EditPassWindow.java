@@ -27,12 +27,12 @@ public class EditPassWindow extends Window {
     /**
      * Metodo que tiene como unico funcionamiento el iniciar los elementos
      * de la ventana
-     * @param prof
+     * @param account
      */
-    public void EditPassWindowInit(Account prof)
+    public void EditPassWindowInit(Account account)
     {
         setCaption("Change Password");
-        this.profToEdit= prof;
+        this.profToEdit= account;
 
         editForm= new VerticalLayout();
         confirmBt= new Button("Confirm Changes");
