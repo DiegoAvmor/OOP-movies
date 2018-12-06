@@ -9,10 +9,24 @@ import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * Esta clase configura la herramienta JsonPath y proporciona métodos
+ * que permiten hacer uso de la herramienta.
+ */
 public class JsonPathUtil {
 
+    /**
+     * Almacena la configuración de la herramienta.
+     */
     private static Configuration configuration;
 
+    /**
+     * Crea un objeto {@link Configuration} para
+     * configurar JsonPath. Jackson está establecido
+     * como el proveedor de mapeo JSON.
+     *
+     * @return un objeto {@link Configuration}
+     */
     private static Configuration buildConfiguration() {
         return  Configuration
                 .builder()
@@ -21,6 +35,11 @@ public class JsonPathUtil {
                 .build();
     }
 
+    /**
+     *  Inicializa la configuración.
+     *
+     * @return
+     */
     private static Configuration initConfiguration() {
         if(configuration == null)
             configuration = buildConfiguration();
@@ -28,6 +47,16 @@ public class JsonPathUtil {
     }
 
 
+    /**
+     * Esconde la implementación de JsonPath para obtener una estructura
+     * de JSON especificada.
+     *
+     * @param jsonURL es la ruta del JSON.
+     * @param jsonPath especifica qué partes del JSON y cómo se desean recuperar.
+     * @param typeRef el JSON es mapeado al tipo de datos especificado aquí.
+     * @param <T>
+     * @return
+     */
     @SuppressWarnings("deprecation")
 	public static <T> T getMappedEntities(URL jsonURL, String jsonPath, TypeRef<T> typeRef) {
         initConfiguration();
