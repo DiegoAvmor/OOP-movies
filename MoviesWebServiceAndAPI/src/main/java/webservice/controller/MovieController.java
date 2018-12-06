@@ -20,6 +20,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
+ /**
+ * Clase que realiza el manejo de las acciones entorno a 
+ * las peliculas.
+ */
 @RestController
 @RequestMapping("movies")
 @CacheConfig(cacheNames={"movies"})
@@ -30,13 +35,24 @@ public class MovieController {
 
     @Autowired
     private MovieFactory movieFactory;
-
+    
+    
+     /**
+    * Metodo cuya funcion es el obtener una pelicula en especial por medio del id
+    * de este.
+    * @param id identificador de la pelicula.
+    */
     @Cacheable(key="#id")
     @GetMapping("/{id}")
     public Movie getMovie(@PathVariable int id) {
         return movieFactory.initRating(movieService.getMovieById(id));
     }
-
+    
+     /**
+    * Metodo cuya funcion es realizar la obtencion del poster de la pelicula
+    * apartir del id de la pelicula.
+    * @param id identificado de la pelicula.
+    */
     @Cacheable(key="#id")
     @GetMapping(value = "/{id}/poster", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getPosterByMovieId(@PathVariable int id) throws IOException {
@@ -44,7 +60,11 @@ public class MovieController {
         InputStream in = new URL(movie.getPoster_path()).openStream();
         return IOUtils.toByteArray(in);
     }
-
+    
+     /**
+    * Metodo cuya funcion es obtener el listado de todas las peliculas almacenadas
+    * en la base de datos.
+    */
     @Cacheable
     @GetMapping
     public List<Movie> getAllMovies() {
@@ -52,11 +72,21 @@ public class MovieController {
 
         return movies;
     }
-
+    
+     /**
+    * Metodo cuuya funcion es obtener las peliculas con un titulo similar a lo
+    * ingresado en buscador.
+    * @param filter String que sera utilizado para obtener las peliculas con titulos similares a este.
+    */
     public List<Movie> getAllMovies(String filter ) {
         return movieFactory.initRatings(movieService.getAllMovies(filter));
     }
-
+    
+     /**
+    * Metodo curya funcion es la obtencion de las peliculas con ids de generos
+    * similares. Devuelve una lista de los las peliculas con generos similares.
+    * @param ids lista de enteros que seran utilizados para realizar la busqueda de generos.
+    */
     @Cacheable(key="#ids")
     @GetMapping("genres/{ids}")
     public List<Movie> getMoviesByGenres(List<Integer> ids) {
