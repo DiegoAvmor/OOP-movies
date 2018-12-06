@@ -1,8 +1,7 @@
 package webservice.model;
 
 /**
- *
- * @author diego
+ *  Clase modelo para del rating de las peliculas.
  */
 public class Rating {
     //--------TheMovieDB-------------
@@ -21,7 +20,11 @@ public class Rating {
         this.Metacritic = Metacritic;
         this.IMDb = IMDb;
     }
-
+    
+     /**
+    * Metodo cuya funcion unica es la obtencion del promedio general de la pelicula
+    * correspondiente.
+    */
     public void giveTotalScore()
     {
         if(this.Metacritic !=0){
