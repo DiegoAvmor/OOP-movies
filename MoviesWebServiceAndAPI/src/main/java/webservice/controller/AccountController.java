@@ -15,12 +15,30 @@ public class AccountController {
         accountService.createAccount(account);
     }
 
-    public void updateAccount(Account account)
+    public Account updateAccountPassword(Account account)
     {
-        accountService.updateAccount(account);
+        return accountService.updateAccountPassword(account);
     }
 
-    public boolean existsById(Account account) {
-        return accountService.existsById(account);
+    public boolean exists(Account account) {
+        return accountService.exists(account);
+    }
+
+    public boolean existsById(String username) {
+        return accountService.existsById(username);
+    }
+
+    public Account getAccount(String id)
+    {
+        return accountService.getAccount(id);
+    }
+
+    public Account editAccountDescription(Account account)
+    {
+        return accountService.editAccountDescription(account);
+    }
+
+    public  void deleteAccount(String id){
+        accountService.deleteAccount(id);
     }
 }

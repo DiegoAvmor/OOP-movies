@@ -54,7 +54,7 @@ public class MovieController {
     }
 
     public List<Movie> getAllMovies(String filter ) {
-        return movieService.getAllMovies(filter);
+        return movieFactory.initRatings(movieService.getAllMovies(filter));
     }
 
     @Cacheable(key="#ids")

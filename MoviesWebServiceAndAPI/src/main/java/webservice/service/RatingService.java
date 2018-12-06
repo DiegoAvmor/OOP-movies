@@ -32,7 +32,6 @@ public class RatingService {
         //--------------------------------------------------------------------------------
         Rating movieRating= new Rating(rt1,rt3,rt2);
         movieRating.giveTotalScore();
-        System.out.print(movieRating.toString());
         return movieRating;
     }
 }

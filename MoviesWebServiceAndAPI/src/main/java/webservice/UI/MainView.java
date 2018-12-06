@@ -11,12 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import webservice.controller.MovieController;
 import webservice.model.Movie;
 import webservice.model.Account;
+
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @SpringUI(path="")
 public class MainView extends UI {
+
+    @Autowired
+    private MovieWindow movieWindow;
+
     @Autowired
     private MovieController movieController;
 
@@ -26,8 +32,10 @@ public class MainView extends UI {
     @Autowired
     private AccountCreation accountCreationWindow;
 
+    @Autowired
+    private AccountWindow accountWindow;
 
-    public Account sessionAccount = null;
+    private Account sessionAccount = null;
 
     private int columns = 5;
 
@@ -45,16 +53,17 @@ public class MainView extends UI {
     private HorizontalLayout toolbar = new HorizontalLayout();
     private CssLayout filtering = new CssLayout();
     private Button accountButton = new Button("Create account");
+    private CssLayout accountButtons = new CssLayout();
 
     @Override
     protected void init(VaadinRequest request) {
-        getMovies();
         parentLayout.addComponents(toolbar, moviesLayout);
 
         toolbar.setSizeFull();
         moviesLayout.setSizeFull();
-
-        toolbar.addComponents(filtering, accountButton, loginButton);
+        accountButtons.addComponents(accountButton, loginButton);
+        accountButtons.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        toolbar.addComponents(filtering, accountButtons);
         searchButton.setIcon(VaadinIcons.FILTER);
         clearFilterButton.setIcon(VaadinIcons.CLOSE_SMALL);
         searchBar.setPlaceholder("search by title...");
@@ -65,13 +74,11 @@ public class MainView extends UI {
 
         accountButton.setWidth(null);
 
-        toolbar.setComponentAlignment(loginButton, Alignment.MIDDLE_RIGHT);
-        toolbar.setComponentAlignment(accountButton, Alignment.MIDDLE_RIGHT);
+        toolbar.setComponentAlignment(accountButtons, Alignment.MIDDLE_RIGHT);
 
         filtering.addComponents(searchBar, clearFilterButton, searchButton);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        loadPosters();
         setContent(parentLayout);
     }
 
@@ -100,7 +107,9 @@ public class MainView extends UI {
     public void showMovieWindow(MoviePoster poster){
         MoviePoster moviePoster = new MoviePoster(poster.getMovie());
         moviePoster.setCaption(null);
-        MovieWindow movieWindow = new MovieWindow(moviePoster);
+
+        movieWindow.loadData(moviePoster);
+
         UI.getCurrent().addWindow(movieWindow);
     }
 
@@ -111,6 +120,11 @@ public class MainView extends UI {
     {
         try{
             movieList = movieController.getAllMovies();
+
+            if(movieList == null) {
+                System.out.println("movieList is null");
+                System.exit(-1);
+            }
         }
         catch(NullPointerException ll){System.out.print("No Movie available in the database");}
     }
@@ -120,6 +134,7 @@ public class MainView extends UI {
      * a cada poster un evento el cual al ser oprimidos este abre en la pantalla actual una subventana
      * con la informacion de la pelicula seleccionada previamente.
      */
+
     public void loadPosters() {
         for(Movie movie : movieList) {
             MoviePoster moviePoster = new MoviePoster(movie);
@@ -134,33 +149,40 @@ public class MainView extends UI {
         }
     }
 
+    @PostConstruct
+    public void loadStartPosters() {
+        getMovies();
+        loadPosters();
+    }
+
     /**
      * Metodo que cambia la vista de forma que toma en cuenta de que se a
      * iniciado una session.
-     * @param prof
+     * @param account
      */
-    public void changeTopLayout(Account prof)
+    public void changeTopLayout(Account account)
     {
-        this.sessionAccount = prof;
-        toolbar.removeComponent(loginButton);
-        toolbar.removeComponent(accountButton);
-        //-----------------MenuBar----------------
+        this.sessionAccount = account;
+        toolbar.removeComponent(accountButtons);
+
+        // Configuración del MenuBar
         header= new MenuBar();
         header.setStyleName(ValoTheme.TEXTFIELD_ALIGN_RIGHT);
         toolbar.addComponent(header);
-        toolbar.setComponentAlignment(header,Alignment.MIDDLE_LEFT);
-        MenuBar.MenuItem profile= header.addItem(sessionAccount.getUsername(),null);
-        //------Se agregan los items en el subMenu-----------
-        MenuBar.MenuItem Infor= profile.addItem("UserInfo", new MenuBar.Command() {
+        toolbar.setComponentAlignment(header,Alignment.MIDDLE_RIGHT);
+        MenuBar.MenuItem accountMenuBar= header.addItem(sessionAccount.getUsername(),null);
+
+        // Se agregan los ítems en el sub menú
+        MenuBar.MenuItem accountInfo= accountMenuBar.addItem("Account Info", new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                profileWindow();//Evento que se realiza cuando se aprieta el item UserInfo
+                profileWindow();
             }
         });
-        MenuBar.MenuItem logout= profile.addItem("Log Out", new MenuBar.Command() {
+        MenuBar.MenuItem logout= accountMenuBar.addItem("Log Out", new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem menuItem) {
-                loginEnable();//Evento que se realiza cuanod se aprieta el item Log-Out
+                loginEnable();
             }
         });
     }
@@ -171,8 +193,8 @@ public class MainView extends UI {
      */
     public  void profileWindow()
     {
-        ProfileWindow prw= new ProfileWindow(sessionAccount);
-        UI.getCurrent().addWindow(prw);
+        accountWindow.ProfileWindowInit(sessionAccount);
+        UI.getCurrent().addWindow(accountWindow);
     }
 
     /**
@@ -183,9 +205,8 @@ public class MainView extends UI {
         toolbar.removeComponent(header);
         sessionAccount =null; //Se vuelve nula el perfil de la sesion actual.
         header=null;//Se vuelve nulo el submenu
-        toolbar.addComponents(accountButton,loginButton);
-        toolbar.setComponentAlignment(accountButton,Alignment.MIDDLE_RIGHT);
-        toolbar.setComponentAlignment(loginButton,Alignment.MIDDLE_RIGHT);
+        toolbar.addComponents(accountButtons);
+        toolbar.setComponentAlignment(accountButtons,Alignment.MIDDLE_RIGHT);
     }
 
     /**
@@ -195,10 +216,24 @@ public class MainView extends UI {
     public void updateList() {
         movieList = movieController.getAllMovies(searchBar.getValue());
 
+        System.out.println("\nSearch bar value = " + "'" + searchBar.getValue() + "'");
+        System.out.println("Matches");
+        for(Movie movie : movieList)
+            System.out.println("   -> " + movie.getTitle());
+        System.out.println();
+
         moviesLayout.removeAllComponents();
         moviePosters.clear();
 
         loadPosters();
+    }
+
+    public Account getSessionAccount() {
+        return sessionAccount;
+    }
+
+    public void setSessionAccount(Account sessionAccount) {
+        this.sessionAccount = sessionAccount;
     }
 }
 

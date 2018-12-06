@@ -52,5 +52,8 @@ public class AccountCreation extends Window {
                 TYPE_HUMANIZED_MESSAGE);
         succesPrompt.setPosition(Position.BOTTOM_CENTER);
         succesPrompt.show(Page.getCurrent());
+
+        accountField.clear();
+        passwordField.clear();
     }
 }

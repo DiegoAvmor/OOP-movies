@@ -22,9 +22,6 @@ public class RatingRaw {
                      @JsonProperty("Metascore") String metaScore,
                      @JsonProperty("imdbRating") String imdbRating) {
 
-        System.out.printf("vote_average=%f;Metascore=%s;imdbRating=%s.%n",
-                vote_average, metaScore, imdbRating);
-
         this.vote_average = vote_average;
 
         if(metaScore != null)
