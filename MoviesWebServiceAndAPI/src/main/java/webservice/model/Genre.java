@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+ /**
+ * Clase modelo anotada como entidad e mapeada a la tabla genres en la base de datos,
+ * es una modelo especifico para los generos.
+ */
 @Entity
 @Table(name = "genres")
 public class Genre {
