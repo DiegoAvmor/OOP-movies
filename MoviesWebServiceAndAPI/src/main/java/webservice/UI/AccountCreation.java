@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 import webservice.controller.AccountController;
 import webservice.model.Account;
 
+/**
+ * Clase que extiende a Window el cual contiene los metodos y constructores para realizar
+ * de forma concreta las acciones a realizar de la ventana Creacion de Cuenta.
+ */
 @Component
 public class AccountCreation extends Window {
 
@@ -44,7 +48,10 @@ public class AccountCreation extends Window {
         setDraggable(false);
         setContent(main);
     }
-
+    
+    /**
+    * Metodo el cual su funcion es realizar la accion de la creacion de una nueva cuenta de usuario.
+    */
     private void createAccount() {
         accountController.createAccount(new Account(accountField.getValue(),
                 passwordField.getValue()));
