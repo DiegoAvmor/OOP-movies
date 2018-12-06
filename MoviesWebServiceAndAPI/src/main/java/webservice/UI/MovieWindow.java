@@ -54,7 +54,11 @@ public class MovieWindow extends Window {
         setClosable(true);
         setDraggable(false);
     }
-
+    
+    /**
+    * Metodo que tiene como funcion realizar el alamacenamiento del rating ingresado
+    * por el usuario.
+    */
     private void rate() {
         MainView mainView = (MainView) UI.getCurrent().getUI();
         PersonalRatingId id = new PersonalRatingId(moviePoster.getMovie().getId(),
@@ -64,7 +68,11 @@ public class MovieWindow extends Window {
 
         label.setValue("Rating stored");
     }
-
+    
+    /**
+    * Metodo que tiene como funcion de realizar la carga de los elementos
+    * en la ventana de la pelicula.
+    */
     public void loadData(MoviePoster moviePoster) {
 
         this.moviePoster = moviePoster;
@@ -110,7 +118,11 @@ public class MovieWindow extends Window {
 
         setContent(horizontalLayout);
     }
-
+    
+    /**
+    * Metodo que tiene como funcion unica hacer la carga del rating del usuario en la
+    * pelicula correspondiente que se haya seleccionado.
+    */
     private String findPersonalRating() {
         MainView main = (MainView) UI.getCurrent().getUI();
         String prompt = "Your rating: ";
