@@ -8,6 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+ /**
+ * Clase anotada como entidad mapeada a la tabla personal_ratings en
+ * la base de datos, clase modelo para los ratings personales.
+ */
 @Entity
 @Table(name = "personal_ratings")
 public class PersonalRating {
