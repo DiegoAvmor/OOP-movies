@@ -44,7 +44,11 @@ public class AccountWindow extends Window {
 
 
     public AccountWindow(){}
-
+    
+    /**
+    * Metodo que tiene como funcion unica la inicializacion de los elementos de la ventana
+    * del perfil del usuario.
+    */
     public void ProfileWindowInit(Account account)
     {
         setCaption(account.getUsername());
@@ -138,7 +142,11 @@ public class AccountWindow extends Window {
         main.setSessionAccount(account);
         }
     }
-
+    /**
+    * Metodo cuya funcion es realizar la carga de los ratings personales de su respectivo
+    * usuario.
+    * @param account
+    */
     public void loadPersonalRatings(Account account) {
         List<PersonalRating> gridFill = personalRatingController.getPersonalRatingsByUsername(account.getUsername());
         grid.setColumns("personalRatingId.id", "rating");
