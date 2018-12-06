@@ -4,7 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-
+ /**
+ * Clase anotada como entidad, mapeada a la tabla accounts en la base de datos.
+ */
 @Entity
 @Table(name = "accounts")
 public class Account {
