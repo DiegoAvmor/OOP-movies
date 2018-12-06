@@ -1,19 +1,20 @@
 package moviewebservice.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import moviewebservice.model.Genre;
-
 import javax.persistence.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.hateoas.ResourceSupport;
 
+/**
+ * <h>Clase que esta mapeada a la tabla movies de la base de datos, consiste
+ * unicamente de dos contructores siendo el constructor predeterminado uno de ellos.
+ */
 @Entity
 @Table(name = "movies")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Movie {
+public class Movie extends ResourceSupport{
     @Id
     private Integer id;
     private String title;
@@ -37,7 +38,7 @@ public class Movie {
         this.poster_path = poster_path;
         this.genres = genres;
     }
-
+//-------------Sets and Gets-------------------
     public List<Genre> getGenres() {
         return genres;
     }
@@ -45,8 +46,7 @@ public class Movie {
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
-
-    public Integer getId() {
+    public Integer getMovieId() {
         return id;
     }
 

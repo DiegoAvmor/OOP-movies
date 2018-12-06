@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- *
- * @author diego
+ * <h>Clase el cual sirve como base de extraccion de datos del formato JSON para
+ * luego poder crear el objeto Rating de forma concreta y sin problemas.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RatingRaw {

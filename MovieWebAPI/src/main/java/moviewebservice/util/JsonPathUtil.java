@@ -7,7 +7,10 @@ import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 import java.io.IOException;
 import java.net.URL;
-
+/**
+ * <h> Clase de utileria con metodos que facilita la obtencion y estructuracion
+ * de recursos en formato JSON obtenido por medio del uso de servicios terceros.
+ */
 public class JsonPathUtil {
 
     private static Configuration configuration;
