@@ -16,7 +16,10 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Clase que extiende a UI que es la intefaz principal del servicio web, este contiene los metodos y 
+ * atributos para realizar las acciones correspondientes.
+ */
 @SpringUI(path="")
 public class MainView extends UI {
 
@@ -81,7 +84,10 @@ public class MainView extends UI {
 
         setContent(parentLayout);
     }
-
+    /**
+    * Metodo que tiene como funcion unica realiza la accion de mostrar la ventana de 
+    * creacion de nueva cuenta.
+    */
     private void showAccountCreationWindow() {
         UI.getCurrent().addWindow(accountCreationWindow);
     }
@@ -148,7 +154,11 @@ public class MainView extends UI {
             moviePoster.addClickListener(showPopup);
         }
     }
-
+    
+    /**
+    * Metodo cuya funcion es realizar la parte de la obtencion de peliculas
+    * e instanciar los posters de las peliculas correspondientes en la UI.
+    */
     @PostConstruct
     public void loadStartPosters() {
         getMovies();
