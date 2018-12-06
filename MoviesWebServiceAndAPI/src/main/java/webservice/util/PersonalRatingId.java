@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+/**
+ * Clase que serializa el id compuesto de la clase {@link PersonalRating}
+ */
 @Embeddable
 public class PersonalRatingId implements Serializable {
     private Integer id;

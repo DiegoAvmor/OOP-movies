@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- *
+ * Clase de mapeo que recibe el JSON tal como es obtenido de
+ * https://www.themoviedb.org/
  * @author diego
  */
 @JsonIgnoreProperties(ignoreUnknown = true)

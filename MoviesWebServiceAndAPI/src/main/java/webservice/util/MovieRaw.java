@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase de mapeo que recibe el JSON tal como es obtenido de
+ * https://www.themoviedb.org/
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieRaw {
     private Integer id;

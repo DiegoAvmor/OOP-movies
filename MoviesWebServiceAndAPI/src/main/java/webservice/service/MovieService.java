@@ -3,7 +3,10 @@ package webservice.service;
 import com.jayway.jsonpath.TypeRef;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import webservice.controller.AccountController;
+import webservice.controller.MovieController;
 import webservice.model.Movie;
+import webservice.repository.AccountRepository;
 import webservice.repository.MovieGenreRepository;
 import webservice.repository.MovieRepository;
 import webservice.util.JsonPathUtil;
@@ -16,6 +19,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Provee una capa de separación entre el controlador {@link MovieController} y
+ * le interfaz {@link MovieRepository}.
+ */
 @Service
 public class MovieService {
     @Autowired
@@ -27,6 +34,11 @@ public class MovieService {
     @Autowired
     private MovieFactory movieFactory;
 
+    /**
+     * Carga inicial de películas a la base de datos.
+     * Si la tabla correspondiente con la clase {@link Movie} está vacía,
+     * entonces se realiza la carga.
+     */
     @PostConstruct
     public void loadData() {
         if(movieRepository.findAll().size() == 0) {

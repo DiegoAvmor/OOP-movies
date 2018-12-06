@@ -6,6 +6,7 @@ import webservice.model.Rating;
 import webservice.util.RatingRaw;
 
 /**
+ * Provee un medio de obtención de los ratings.
  *
  * @author diego
  */
