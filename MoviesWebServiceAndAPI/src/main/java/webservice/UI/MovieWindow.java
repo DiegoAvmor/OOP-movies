@@ -28,7 +28,7 @@ public class MovieWindow extends Window {
     private final Grid<Rating> ratings;
     private Rating rating;
     private MoviePoster moviePoster;
-    private final TextField personalRating;
+    private TextField personalRating;
     private final Button rateButton;
     private final Label label;
 
@@ -61,6 +61,8 @@ public class MovieWindow extends Window {
                 mainView.getSessionAccount().getUsername());
         personalRatingController.loadRating(new PersonalRating(id,
                 Integer.parseInt(personalRating.getValue())));
+
+        label.setValue("Rating stored");
     }
 
     public void loadData(MoviePoster moviePoster) {
