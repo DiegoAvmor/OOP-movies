@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import webservice.controller.AccountController;
 import webservice.model.Account;
-
+/**
+ * Clase que extiende a Window el cual contiene los metodos y constructores para realizar
+ * de forma concreta las acciones de la ventana de cambio de contraseña.
+ */
 @Component
 public class EditPassWindow extends Window {
 
