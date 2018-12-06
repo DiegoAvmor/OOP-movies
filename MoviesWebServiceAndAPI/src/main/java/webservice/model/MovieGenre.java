@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+
+ /**
+ * Clase anotada como entidad y mapeada a la tabla movies_genres en la base de datos.
+ */
 @Entity
 @Table(name = "movies_genres")
 public class MovieGenre {
