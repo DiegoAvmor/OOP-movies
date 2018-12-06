@@ -7,6 +7,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+ /**
+ * Clase anotada como entidad y mapaead a la tabla en la base de datos movies,
+ * es una clase modelo unico para las Peliculas.
+ */
 @Entity
 @Table(name = "movies")
 public class Movie {
