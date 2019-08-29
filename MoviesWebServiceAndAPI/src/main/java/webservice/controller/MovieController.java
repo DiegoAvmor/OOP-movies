@@ -59,7 +59,7 @@ public class MovieController {
 
     @Cacheable(key="#ids")
     @GetMapping("genres/{ids}")
-    public List<Movie> getMoviesByGenres(List<Integer> ids) {
+    public List<Movie> getMoviesByGenres(@PathVariable List<Integer> ids) {
         return movieFactory.initRatings(movieService.getMoviesByGenreIds(ids));
     }
 }
